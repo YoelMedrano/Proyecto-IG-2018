@@ -15,7 +15,7 @@ angular.module('angularRestfulAuth')
                 if (res.type == false) {
                     alert(res.data)    
                 } else {
-                   window.localStorage.setItem('token',res.data.token);
+                   //window.localStorage.setItem('token',res.data.token);
                     $localStorage.token = res.token;
                     window.location = "#/map";    
                 }
