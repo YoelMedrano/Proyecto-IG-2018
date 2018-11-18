@@ -30,7 +30,8 @@ angular.module('angularRestfulAuth')
                  apellido : $scope.apellido,
                  correoElectronico : $scope.correoElectronico,
                  contrasena : $scope.contrasena,
-                 fechaNacimiento : $scope.fechaNacimiento ,
+                 confirmacioncontrasena: $scope.confirmacioncontrasena,
+                 fechaNacimiento : $scope.fechaNacimiento 
                  
             }
 
