@@ -20,7 +20,7 @@ angular.module('angularRestfulAuth')
                     window.location = "#/map";    
                 }
             }, function() {
-                $scope.error = 'Error al registar';
+                $scope.error = 'Error al ingresar';
             })
         };
 
