@@ -31,8 +31,7 @@ angular.module('angularRestfulAuth')
                  correoElectronico : $scope.correoElectronico,
                  contrasena : $scope.contrasena,
                  confirmacioncontrasena: $scope.confirmacioncontrasena,
-                 fechaNacimiento : $scope.fechaNacimiento 
-                 
+                 fechaNacimiento : $scope.fechaNacimiento     
             }
 
             Main.signup(formData, function(res) {
