@@ -56,7 +56,7 @@ angular.module('angularRestfulAuth')
 
         $scope.logout = function() {
             Main.logout(function() {
-                window.location = "/"
+                window.location = "#/home"
             }, function() {
                 alert("Failed to logout!");
             });
