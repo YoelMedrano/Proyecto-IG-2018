@@ -31,7 +31,7 @@ angular.module('angularRestfulAuth', [
         })
 
         .when('/', {
-            controller: 'HomeCtrl',
+            controller: 'LoginController',
             templateUrl: 'partials/userperfil.html'
         })
  
