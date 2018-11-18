@@ -42,7 +42,7 @@ angular.module('angularRestfulAuth')
                     window.location = "#/login";  
                 }
             }, function() {
-                $rootScope.error = message;
+                $rootScope.error = $scope.message;
             })
         };
 
