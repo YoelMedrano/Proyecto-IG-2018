@@ -42,7 +42,7 @@ angular.module('angularRestfulAuth')
                     window.location = "#/login";  
                 }
             }, function() {
-                $rootScope.error = 'Error al registar';
+                $rootScope.error = message;
             })
         };
 
