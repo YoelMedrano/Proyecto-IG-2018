@@ -17,7 +17,7 @@ angular.module('angularRestfulAuth')
                 } else {
                    // window.localStorage.setItem('token',res.data.token);
                     $localStorage.token = res.token;
-                    window.location = "/";    
+                    window.location = "/map";    
                 }
             }, function() {
                 $scope.error = 'Error al registar';
@@ -42,7 +42,7 @@ angular.module('angularRestfulAuth')
                     window.location = "#/login";  
                 }
             }, function() {
-                $rootScope.error = $scope.message;
+                $rootScope.error = 'Error al registar';
             })
         };
 
