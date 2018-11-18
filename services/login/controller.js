@@ -23,6 +23,6 @@ angular.module('Authentication')
 
         $scope.logout= function (){
             AuthenticationService.ClearCredentials();
-            $location.path('#/home');
+            
         };
 }]);
