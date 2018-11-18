@@ -12,11 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.text.SimpleDateFormat;
-
-import java.util.Date;
-import java.util.Calendar;
-
 import java.time.LocalDateTime;
 
 @Slf4j
@@ -28,8 +23,6 @@ public class ClienteService {
 
     @Autowired
     private ClienteRepository clienteRepository;
-
-
 
 
     public ResponseEntity<Object> login(ClienteLoginCommand command) {
@@ -68,87 +61,33 @@ public class ClienteService {
     public ResponseEntity<Object> register(ClienteSignUpCommand command) {
         log.debug("About to be processed [{}]", command);
 
-
-
         if (clienteRepository.existsByCorreoElectronico(command.getCorreoElectronico())) {
             log.info("La dirección de correo {} ya se encuentra en la base de datos.", command.getCorreoElectronico());
 
             return ResponseEntity.badRequest().body(buildNotifyResponse("El usuario ya se encuentra registrado en el sistema."));
         } else {
+            if (!command.getContrasena().equals(command.getConfirmacioncontrasena())) {
+                log.info("The passwords are not equal");
+                return ResponseEntity.badRequest().body(buildNotifyResponse("Las contrasenas no coinciden"));
+            } else {
+                Cliente user = new Cliente();
 
-                if (!command.getContrasena().equals(command.getConfirmacioncontrasena())) {
-                    log.info("Las contrasenas no coinciden");
-                    return ResponseEntity.badRequest().body(buildNotifyResponse("Las contrasenas no coinciden"));
-                } else {
-                    try {
-                    if(esMayorDeEdad(command.getFechaNacimiento())){
+                user.setIdCliente(System.currentTimeMillis());
+                user.setNombre(command.getNombre());
+                user.setApellido(command.getApellido());
+                user.setCorreoElectronico(command.getCorreoElectronico());
+                user.setContrasena(command.getContrasena());
+                user.setFechaNacimiento(command.getFechaNacimiento());
 
-                    Cliente user = new Cliente();
+                clienteRepository.save(user);
 
-                        user.setIdCliente(System.currentTimeMillis());
-                        user.setNombre(command.getNombre());
-                        user.setApellido(command.getApellido());
-                        user.setCorreoElectronico(command.getCorreoElectronico());
-                        user.setContrasena(command.getContrasena());
-                        user.setFechaNacimiento(command.getFechaNacimiento());
+                log.info("Registered user with ID={}", user.getIdCliente());
 
-                        clienteRepository.save(user);
-
-                        log.info("Usuario Registrado ", user.getIdCliente());
-
-                        return ResponseEntity.ok().body(buildNotifyResponse("Usuario registrado."));
-                    }else{
-                        return ResponseEntity.badRequest().body(buildNotifyResponse("El Usuario no es mayor de edad "));
-
-                    }
-
-                }catch(Exception e){
-                log.info("Contrasena Invalida ", command.getContrasena());
-                return ResponseEntity.badRequest().body(buildNotifyResponse("*Contrasena Invalida* : El usuario no se pudo registrar en el sistema."));
-
-                    }
-                }
+                return ResponseEntity.ok().body(buildNotifyResponse("Usuario registrado."));
             }
-
-    }
-
-
-    private Boolean esMayorDeEdad(Date fecha){
-
-        Date data = new Date();
-        SimpleDateFormat formatar = new SimpleDateFormat("d");//dd/MM/yyyy
-        String op = formatar.format(data);
-        formatar = new SimpleDateFormat("M");//dd/MM/yyyy
-        String op2 = formatar.format(data);
-        formatar = new SimpleDateFormat("y");//dd/MM/yyyy
-        String op3 = formatar.format(data);
-
-        Calendar calendar = Calendar.getInstance(); // Obtiene una instancia de Calendar
-        calendar.setTime(fecha); // Asigna la fecha al Calendar
-
-        if((Integer.parseInt(op3)-calendar.get(Calendar.YEAR)) >18){
-            return true;
-
-        }else if((Integer.parseInt(op3)-calendar.get(Calendar.YEAR)) ==18){
-            if((calendar.get(Calendar.MONTH)+1<Integer.parseInt(op2))) {
-                return true;
-
-            }else if((calendar.get(Calendar.MONTH)+1==Integer.parseInt(op2))){
-                if((calendar.get(Calendar.DAY_OF_MONTH)+1<=Integer.parseInt(op))){
-                    return true;
-
-                }else return false;
-
-            }else return false;
-
-        }else{
-            return false;
         }
-
-
-      //  log.info("es :{} {} {}",op,op2,op3);
-
     }
+
 
 
     private NotifyResponse buildNotifyResponse(String message) { //MUESTRA UN MENSAJE DE NOTIFICACIÓN
