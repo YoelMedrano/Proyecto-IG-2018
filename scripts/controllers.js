@@ -17,7 +17,7 @@ angular.module('angularRestfulAuth')
                 } else {
                    //window.localStorage.setItem('token',res.data.token);
                     $localStorage.token = res.token;
-                    window.location = "#/";    
+                    window.location = "#/home";    
                 }
             }, function() {
                 $scope.error = 'Error al ingresar';
