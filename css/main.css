@@ -102,6 +102,10 @@ button:hover {
 	cursor: pointer;
 }
 
+.glyphicon{
+      background: white;
+}
+
 iframe {
 	border: none !important;
 }
