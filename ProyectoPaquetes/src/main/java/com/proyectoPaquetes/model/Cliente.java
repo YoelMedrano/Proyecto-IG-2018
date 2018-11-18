@@ -4,6 +4,8 @@ package com.proyectoPaquetes.model;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import com.proyectoPaquetes.command.ValidPassword;
+
 
 import java.util.Date;
 
@@ -30,6 +32,7 @@ public class Cliente extends AuditModel {
     private String correoElectronico;
     @NotBlank
     @Size(min = 3, max = 100)
+    @ValidPassword
     private String contrasena;
 
    @Column(name = "fechaNacimiento")

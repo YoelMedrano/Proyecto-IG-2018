@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import com.proyectoPaquetes.command.PasswordConstraintValidator;
 
 import java.time.LocalDateTime;
 
@@ -23,6 +24,8 @@ public class ClienteService {
 
     @Autowired
     private ClienteRepository clienteRepository;
+
+
 
 
     public ResponseEntity<Object> login(ClienteLoginCommand command) {
@@ -66,26 +69,35 @@ public class ClienteService {
 
             return ResponseEntity.badRequest().body(buildNotifyResponse("El usuario ya se encuentra registrado en el sistema."));
         } else {
-            if (!command.getContrasena().equals(command.getConfirmacioncontrasena())) {
-                log.info("The passwords are not equal");
-                return ResponseEntity.badRequest().body(buildNotifyResponse("Las contrasenas no coinciden"));
-            } else {
-                Cliente user = new Cliente();
 
-                user.setIdCliente(System.currentTimeMillis());
-                user.setNombre(command.getNombre());
-                user.setApellido(command.getApellido());
-                user.setCorreoElectronico(command.getCorreoElectronico());
-                user.setContrasena(command.getContrasena());
-                user.setFechaNacimiento(command.getFechaNacimiento());
+                if (!command.getContrasena().equals(command.getConfirmacioncontrasena())) {
+                    log.info("Las contrasenas no coinciden");
+                    return ResponseEntity.badRequest().body(buildNotifyResponse("Las contrasenas no coinciden"));
+                } else {
 
-                clienteRepository.save(user);
+                    Cliente user = new Cliente();
+                    try {
+                        user.setIdCliente(System.currentTimeMillis());
+                        user.setNombre(command.getNombre());
+                        user.setApellido(command.getApellido());
+                        user.setCorreoElectronico(command.getCorreoElectronico());
+                        user.setContrasena(command.getContrasena());
+                        user.setFechaNacimiento(command.getFechaNacimiento());
 
-                log.info("Registered user with ID={}", user.getIdCliente());
+                        clienteRepository.save(user);
 
-                return ResponseEntity.ok().body(buildNotifyResponse("Usuario registrado."));
+                        log.info("Usuario Registrado ", user.getIdCliente());
+
+                    return ResponseEntity.ok().body(buildNotifyResponse("Usuario registrado."));
+
+                }catch(Exception e){
+                log.info("Contrasena Invalida ", command.getContrasena());
+                return ResponseEntity.badRequest().body(buildNotifyResponse("*Contrasena Invalida* : El usuario no se pudo registrar en el sistema."));
+
+                    }
+                }
             }
-        }
+
     }
 
 
