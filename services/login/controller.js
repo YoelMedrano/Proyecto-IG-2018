@@ -22,7 +22,7 @@ angular.module('Authentication')
         };
 
         $scope.logout= function (){
-            Authentication.ClearCredentials();
+            AuthenticationService.ClearCredentials();
             $location.path('#/home');
         };
 }]);
