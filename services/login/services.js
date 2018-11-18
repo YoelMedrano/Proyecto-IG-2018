@@ -7,7 +7,7 @@ angular.module('Authentication')
     function (Base64, $http, $cookieStore, $rootScope, $timeout) {
         var service = {};
 
-        service.Login = function (correoElectronico, contrasena, callback) {
+        service.Login = function (email, password, callback) {
 
             /* Dummy authentication for testing, uses $timeout to simulate api call
              ----------------------------------------------*/
@@ -40,7 +40,7 @@ angular.module('Authentication')
 
         };
  
-        service.SetCredentials = function (correoElectronico, contrasena) {
+        service.SetCredentials = function (email, password) {
             var authdata = Base64.encode(correoElectronico + ':' + contrasena);
  
             $rootScope.globals = {
