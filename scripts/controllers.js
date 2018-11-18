@@ -7,8 +7,8 @@ angular.module('angularRestfulAuth')
 
         $scope.signin = function() {
             var formData = {
-                email: $scope.email,
-                password: $scope.password
+                correoElectronico: $scope.correoElectronico,
+                contrasena: $scope.contrasena
             }
 
             Main.signin(formData, function(res) {
@@ -26,13 +26,12 @@ angular.module('angularRestfulAuth')
 
         $scope.signup = function() {
             var formData = {
-                 firstName : $scope.firstName,
-                 lastName : $scope.lastName,
-                 gender: $scope.gender,
-                 dateOfBirth : $scope.dateOfBirth ,
-                 email : $scope.email,
-                 password : $scope.password,
-                 confirmationPassword : $scope.password
+                 nombre : $scope.nombre,
+                 apellido : $scope.apellido,
+                 correoElectronico : $scope.correoElectronico,
+                 contrasena : $scope.contrasena,
+                 fechaNacimiento : $scope.fechaNacimiento ,
+                 
             }
 
             Main.signup(formData, function(res) {

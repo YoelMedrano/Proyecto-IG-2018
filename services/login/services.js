@@ -7,14 +7,14 @@ angular.module('Authentication')
     function (Base64, $http, $cookieStore, $rootScope, $timeout) {
         var service = {};
 
-        service.Login = function (email, password, callback) {
+        service.Login = function (correoElectronico, contrasena, callback) {
 
             /* Dummy authentication for testing, uses $timeout to simulate api call
              ----------------------------------------------*/
            /* $timeout(function(){
-                var response = { success: username === 'test' && password === 'test' };
+                var response = { success: username === 'test' && contrasena === 'test' };
                 if(!response.success) {
-                    response.message = 'Username or password is incorrect';
+                    response.message = 'Username or contrasena is incorrect';
                 }
                 callback(response);
             }, 1000);
@@ -23,15 +23,15 @@ angular.module('Authentication')
             // Use this for real authentication
              //----------------------------------------------
             
-             $http.post( 'https://proyectois.herokuapp.com/account/login', {email : email , password : password})
+             $http.post( 'https://proyecto-paquetes-ings.herokuapp.com/login', {correoElectronico : correoElectronico , contrasena : contrasena})
               .success(function (response){
-                       var response= { success: email && password };
+                       var response= { success: correoElectronico && contrasena };
                        
                        callback(response);
                       
             },1000)
             .error(function (response) {
-              response.message = "Email o Contraseña invalida";
+              response.message = "Correo Electronico o Contraseña invalida";
               callback(response);
               
             });
@@ -40,12 +40,12 @@ angular.module('Authentication')
 
         };
  
-        service.SetCredentials = function (email, password) {
-            var authdata = Base64.encode(email + ':' + password);
+        service.SetCredentials = function (correoElectronico, contrasena) {
+            var authdata = Base64.encode(correoElectronico + ':' + contrasena);
  
             $rootScope.globals = {
                 currentUser: {
-                    email: email,
+                    correoElectronico: correoElectronico,
                     authdata: authdata
                 }
             };
