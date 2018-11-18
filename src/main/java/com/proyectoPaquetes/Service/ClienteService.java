@@ -126,10 +126,16 @@ public class ClienteService {
         Calendar calendar = Calendar.getInstance(); // Obtiene una instancia de Calendar
         calendar.setTime(fecha); // Asigna la fecha al Calendar
 
-        if((Integer.parseInt(op3)-calendar.get(Calendar.YEAR)) >=18){
-            if((calendar.get(Calendar.MONTH)+1<=Integer.parseInt(op2))){
+        if((Integer.parseInt(op3)-calendar.get(Calendar.YEAR)) >18){
+            return true;
+
+        }else if((Integer.parseInt(op3)-calendar.get(Calendar.YEAR)) ==18){
+            if((calendar.get(Calendar.MONTH)+1<Integer.parseInt(op2))) {
+                return true;
+
+            }else if((calendar.get(Calendar.MONTH)+1==Integer.parseInt(op2))){
                 if((calendar.get(Calendar.DAY_OF_MONTH)+1<=Integer.parseInt(op))){
-                        return true;
+                    return true;
 
                 }else return false;
 
