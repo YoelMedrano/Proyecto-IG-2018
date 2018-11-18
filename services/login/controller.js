@@ -20,4 +20,8 @@ angular.module('Authentication')
                 }
             });
         };
+
+        $scope.logout= function (){
+            Authentication.ClearCredentials();
+        }
 }]);
