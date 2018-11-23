@@ -12,13 +12,9 @@ import java.util.Date;
 @Entity
 @Table(name = "Clientes")
 public class Cliente extends AuditModel {
-    @Id
-    @GeneratedValue(generator = "question_generator")
-    @SequenceGenerator(
-            name = "question_generator",
-            sequenceName = "question_sequence",
-            initialValue = 1000
-    )
+
+
+   @Id
     private Long idCliente;
 
     @NotBlank

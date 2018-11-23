@@ -11,6 +11,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import com.proyectoPaquetes.command.Validation;
+import com.proyectoPaquetes.command.ClienteUpdateCommand;
 
 import java.text.SimpleDateFormat;
 
@@ -28,6 +30,7 @@ public class ClienteService {
 
     @Autowired
     private ClienteRepository clienteRepository;
+    Validation validation = new Validation();
 
 
 
@@ -81,7 +84,9 @@ public class ClienteService {
                     return ResponseEntity.badRequest().body(buildNotifyResponse("Las contrasenas no coinciden"));
                 } else {
                     try {
-                    if(esMayorDeEdad(command.getFechaNacimiento())){
+
+
+                    if(validation.esMayorDeEdad(command.getFechaNacimiento())){
 
                     Cliente user = new Cliente();
 
@@ -94,9 +99,9 @@ public class ClienteService {
 
                         clienteRepository.save(user);
 
-                        log.info("Usuario Registrado ", user.getIdCliente());
+                        log.info("Usuario Registrado Id = {} ", user.getIdCliente());
 
-                        return ResponseEntity.ok().body(buildNotifyResponse("Usuario registrado."));
+                        return ResponseEntity.ok().body(buildNotifyResponse("Usuario registrado "));
                     }else{
                         return ResponseEntity.badRequest().body(buildNotifyResponse("El Usuario no es mayor de edad "));
 
@@ -113,42 +118,38 @@ public class ClienteService {
     }
 
 
-    private Boolean esMayorDeEdad(Date fecha){
+    public ResponseEntity<Object> update(ClienteUpdateCommand command, String id) {
+        log.debug("About to process [{}]", command);
+        if (!clienteRepository.existsById(Long.parseLong(id))) {
+            log.info("Cannot find user with ID={}", id);
+            return ResponseEntity.badRequest().body(buildNotifyResponse("id invalido"));
+        } else {
+            if(validation.esMayorDeEdad(command.getFechaNacimiento())){
+            Cliente user = new Cliente();
+            clienteRepository.deleteById(Long.parseLong(id));
 
-        Date data = new Date();
-        SimpleDateFormat formatar = new SimpleDateFormat("d");//dd/MM/yyyy
-        String op = formatar.format(data);
-        formatar = new SimpleDateFormat("M");//dd/MM/yyyy
-        String op2 = formatar.format(data);
-        formatar = new SimpleDateFormat("y");//dd/MM/yyyy
-        String op3 = formatar.format(data);
+            user.setIdCliente(Long.parseLong(id));
+            user.setNombre(command.getNombre());
+            user.setApellido(command.getApellido());
+            user.setCorreoElectronico(command.getCorreoElectronico());
+            user.setContrasena(command.getContrasena());
+            user.setFechaNacimiento(command.getFechaNacimiento());
 
-        Calendar calendar = Calendar.getInstance(); // Obtiene una instancia de Calendar
-        calendar.setTime(fecha); // Asigna la fecha al Calendar
+            clienteRepository.save(user);
 
-        if((Integer.parseInt(op3)-calendar.get(Calendar.YEAR)) >18){
-            return true;
+            log.info("Updated user with ID={}", user.getIdCliente());
 
-        }else if((Integer.parseInt(op3)-calendar.get(Calendar.YEAR)) ==18){
-            if((calendar.get(Calendar.MONTH)+1<Integer.parseInt(op2))) {
-                return true;
+            return ResponseEntity.ok().body(buildNotifyResponse("La operación ha sido exitosa."));
+            }else{
+                return ResponseEntity.badRequest().body(buildNotifyResponse("El Usuario no es mayor de edad "));
 
-            }else if((calendar.get(Calendar.MONTH)+1==Integer.parseInt(op2))){
-                if((calendar.get(Calendar.DAY_OF_MONTH)+1<=Integer.parseInt(op))){
-                    return true;
-
-                }else return false;
-
-            }else return false;
-
-        }else{
-            return false;
-        }
-
-
-      //  log.info("es :{} {} {}",op,op2,op3);
-
+            }
+            }
     }
+
+
+
+
 
 
     private NotifyResponse buildNotifyResponse(String message) { //MUESTRA UN MENSAJE DE NOTIFICACIÓN
