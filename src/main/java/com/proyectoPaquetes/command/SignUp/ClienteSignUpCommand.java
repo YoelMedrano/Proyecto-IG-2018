@@ -1,6 +1,7 @@
-package com.proyectoPaquetes.command;
+package com.proyectoPaquetes.command.SignUp;
 
 
+import com.proyectoPaquetes.command.ValidationRules;
 import lombok.Data;
 import lombok.ToString;
 
@@ -17,8 +18,8 @@ public class ClienteSignUpCommand implements Serializable {
     //ÉSTOS SON LOS COMANDOS QUE RIGEN LAS VALIDACIONES A LA HORA DE REGISTRAR UN NUEVO USUARIO
     @NotNull(message = "Por favor, introduzca su nombre.")
     @NotEmpty(message = "Por favor, introduzca su nombre.")
-    @Size(max = ValidationRules.FIRST_LAST_NAME_MAX_SIZE, message = "El nombre no puede contener más de 40 caracteres.")
     @Pattern(regexp = ValidationRules.FIRST_LAST_NAME_REGEX, message = "El nombre posee caracteres no válidos.")
+    @Size(max = ValidationRules.FIRST_LAST_NAME_MAX_SIZE, message = "El nombre no puede contener más de 40 caracteres.")
     private String nombre;
 
     @NotNull(message = "Por favor, introduzca su apellido.")
