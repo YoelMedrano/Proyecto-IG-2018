@@ -2,8 +2,10 @@ package com.proyectoPaquetes.Service;
 
 
 import com.proyectoPaquetes.command.ClienteLoginCommand;
-import com.proyectoPaquetes.command.ClienteSignUpCommand;
+import com.proyectoPaquetes.command.SignUp.BloqueoSignUpCommand;
+import com.proyectoPaquetes.command.SignUp.ClienteSignUpCommand;
 import com.proyectoPaquetes.model.Cliente;
+import com.proyectoPaquetes.model.Bloqueo;
 import com.proyectoPaquetes.repository.ClienteRepository;
 import com.proyectoPaquetes.response.ClienteResponse;
 import com.proyectoPaquetes.response.NotifyResponse;
@@ -13,11 +15,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import com.proyectoPaquetes.command.Validation;
 import com.proyectoPaquetes.command.ClienteUpdateCommand;
-
-import java.text.SimpleDateFormat;
-
-import java.util.Date;
-import java.util.Calendar;
 
 import java.time.LocalDateTime;
 
@@ -30,38 +27,54 @@ public class ClienteService {
 
     @Autowired
     private ClienteRepository clienteRepository;
+    @Autowired
+    private BloqueoService bloqueo;
+
+
     Validation validation = new Validation();
 
 
 
 
     public ResponseEntity<Object> login(ClienteLoginCommand command) {
-        log.debug("About to process [{}]", command);
-        Cliente u = clienteRepository.findFirstByCorreoElectronicoIgnoreCaseContaining(command.getCorreoElectronico());
-        if (u == null) {
-            log.info("Cannot find user with email={}", command.getCorreoElectronico());
+        try {
+            log.debug("About to process [{}]", command);
+            Cliente u = clienteRepository.findFirstByCorreoElectronicoIgnoreCaseContaining(command.getCorreoElectronico());
+            if (u == null) {
+                log.info("Cannot find user with email={}", command.getCorreoElectronico());
 
-            return ResponseEntity.badRequest().body(buildNotifyResponse("Dirección de correo no válida."));
-        } else {
-            if (u.getContrasena().equals(command.getContrasena())) {
-                log.info("Successful login for user={}", u.getIdCliente());
-
-                ClienteResponse respuesta = new ClienteResponse();
-                respuesta.setIdCliente(String.valueOf(u.getIdCliente()));
-                respuesta.setNombre(u.getNombre());
-                respuesta.setApellido(u.getApellido());
-                respuesta.setCorreoElectronico(u.getCorreoElectronico());
-                respuesta.setContrasena(u.getContrasena());
-                respuesta.setFechaNacimiento(String.valueOf(u.getFechaNacimiento()));
-
-                return ResponseEntity.ok(respuesta);
+                return ResponseEntity.badRequest().body(buildNotifyResponse("Dirección de correo no válida."));
             } else {
-                log.info("{} is not valid password for user {}", command.getContrasena(), u.getIdCliente());
+                if (u.getContrasena().equals(command.getContrasena())) {
+                    if (bloqueo.VerificarSiEstaBloqueado(u.getCorreoElectronico())) {
+                        bloqueo.borrarBloqueo(u.getCorreoElectronico());
+                        log.info("Successful login for user={}", u.getIdCliente());
+                        ClienteResponse respuesta = new ClienteResponse();
+                        respuesta.setIdCliente(String.valueOf(u.getIdCliente()));
+                        respuesta.setNombre(u.getNombre());
+                        respuesta.setApellido(u.getApellido());
+                        respuesta.setCorreoElectronico(u.getCorreoElectronico());
+                        respuesta.setContrasena(u.getContrasena());
+                        respuesta.setFechaNacimiento(String.valueOf(u.getFechaNacimiento()));
 
-                return ResponseEntity.badRequest().body(buildNotifyResponse("Proceso no válido. "));
+                        return ResponseEntity.ok(respuesta);
+                    } else
+                        return ResponseEntity.badRequest().body(buildNotifyResponse("Su usuario esta Bloqueado"));
+
+                } else {
+                    log.info("{} is not valid password for user {}", command.getContrasena(), u.getIdCliente());
+                    Bloqueo user = new Bloqueo();
+                    user.setId(u.getIdCliente());
+                    user.setCorreoElectronico(u.getCorreoElectronico());
+                    user.setCantidadDeIntentos(1);
+
+                    return bloqueo.RegistrarBloqueo(user);//ResponseEntity.badRequest().body(buildNotifyResponse(""));
+                }
             }
-        }
+        }catch(Exception e){
+            return ResponseEntity.badRequest().body(buildNotifyResponse("Ocurrio un error al hacer login"));
 
+        }
     }
 
 

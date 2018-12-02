@@ -2,21 +2,15 @@ package com.proyectoPaquetes.controller;
 
 
 
-import com.proyectoPaquetes.repository.ClienteRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import com.proyectoPaquetes.Service.PaqueteService;
 
-import com.proyectoPaquetes.command.ClienteLoginCommand;
-import com.proyectoPaquetes.command.PaqueteSignUpCommand;
-import com.proyectoPaquetes.command.ClienteUpdateCommand;
+import com.proyectoPaquetes.command.SignUp.PaqueteSignUpCommand;
 
-import java.util.ArrayList;
 @Slf4j
 
 @CrossOrigin
@@ -29,9 +23,9 @@ public class PaquetesController {
 
 
 
-    @RequestMapping(value = "/registrar/{id}", consumes = "application/json", method = RequestMethod.POST)
-    public ResponseEntity register(@Valid @RequestBody PaqueteSignUpCommand command,@PathVariable("id") String id) {
-        return paqueteService.register(command,id);
+    @RequestMapping(value = "/registrar/{id}/{idOrden}", consumes = "application/json", method = RequestMethod.POST)
+    public ResponseEntity register(@Valid @RequestBody PaqueteSignUpCommand command,@PathVariable("id") String id,@PathVariable("idOrden") String idOrden) {
+        return paqueteService.register(command,id,idOrden);
     }
 
  /*   @RequestMapping(value = "/login", consumes = "application/json", method = RequestMethod.POST)

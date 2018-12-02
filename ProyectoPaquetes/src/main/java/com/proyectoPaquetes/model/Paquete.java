@@ -15,29 +15,23 @@ public class Paquete extends AuditModel {
     @Id
     private Long idPaquete;
 
+    private Long idOrden;
+
     private Long idCliente;
 
     @NotBlank
     @Size(min = 3, max = 100)
-    private String direccionEntrega;
+    private String nombreApellidoEntrega;
+
+
     @NotBlank
     @Size(min = 3, max = 100)
-    private String direccionRecoleccion;
-  //  @NotBlank
+    private String descripcionPaquete;
+
+
     private double pesoKgs;
-    @NotBlank
-    @Size(min = 3, max = 100)
-    private String descripcion;
 
 
-
-    public Long getIdCliente() {
-        return idCliente;
-    }
-
-    public void setIdCliente(Long idCliente) {
-        this.idCliente = idCliente;
-    }
 
     public Long getIdPaquete() {
         return idPaquete;
@@ -47,20 +41,28 @@ public class Paquete extends AuditModel {
         this.idPaquete = idPaquete;
     }
 
-    public String getDireccionEntrega() {
-        return direccionEntrega;
+    public Long getIdOrden() {
+        return idOrden;
     }
 
-    public void setDireccionEntrega(String direccionEntrega) {
-        this.direccionEntrega = direccionEntrega;
+    public void setIdOrden(Long idOrden) {
+        this.idOrden = idOrden;
     }
 
-    public String getDireccionRecoleccion() {
-        return direccionRecoleccion;
+    public String getNombreApellidoEntrega() {
+        return nombreApellidoEntrega;
     }
 
-    public void setDireccionRecoleccion(String direccionRecoleccion) {
-        this.direccionRecoleccion = direccionRecoleccion;
+    public void setNombreApellidoEntrega(String nombreApellidoEntrega) {
+        this.nombreApellidoEntrega = nombreApellidoEntrega;
+    }
+
+    public String getDescripcionPaquete() {
+        return descripcionPaquete;
+    }
+
+    public void setDescripcionPaquete(String descripcionPaquete) {
+        this.descripcionPaquete = descripcionPaquete;
     }
 
     public double getPesoKgs() {
@@ -71,11 +73,11 @@ public class Paquete extends AuditModel {
         this.pesoKgs = peso;
     }
 
-    public String getDescripcion() {
-        return descripcion;
+    public Long getIdCliente() {
+        return idCliente;
     }
 
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
+    public void setIdCliente(Long idCliente) {
+        this.idCliente = idCliente;
     }
 }
