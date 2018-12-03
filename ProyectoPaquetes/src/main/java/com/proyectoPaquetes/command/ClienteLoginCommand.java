@@ -1,6 +1,7 @@
 package com.proyectoPaquetes.command;
 
 
+import com.proyectoPaquetes.command.ValidationRules;
 import lombok.Data;
 import lombok.ToString;
 

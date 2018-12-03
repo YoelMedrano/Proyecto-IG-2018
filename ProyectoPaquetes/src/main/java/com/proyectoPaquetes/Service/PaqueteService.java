@@ -1,23 +1,15 @@
 package com.proyectoPaquetes.Service;
 
 
-import com.proyectoPaquetes.command.PaqueteSignUpCommand;
+import com.proyectoPaquetes.command.SignUp.PaqueteSignUpCommand;
 import com.proyectoPaquetes.model.Paquete;
 import com.proyectoPaquetes.repository.ClienteRepository;
 import com.proyectoPaquetes.repository.PaqueteRepository;
-import com.proyectoPaquetes.response.ClienteResponse;
 import com.proyectoPaquetes.response.NotifyResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import com.proyectoPaquetes.command.Validation;
-import com.proyectoPaquetes.command.ClienteUpdateCommand;
-
-import java.text.SimpleDateFormat;
-
-import java.util.Date;
-import java.util.Calendar;
 
 import java.time.LocalDateTime;
 
@@ -33,7 +25,7 @@ public class PaqueteService {
         private ClienteRepository clienteRepository;
 
 
-            public ResponseEntity<Object> register(PaqueteSignUpCommand command,String idCliente) {
+            public ResponseEntity<Object> register(PaqueteSignUpCommand command,String idCliente,String idOrden) {
                 log.debug("About to be processed [{}]", command);
 
                 if (clienteRepository.existsById(Long.parseLong(idCliente))) {
@@ -44,10 +36,10 @@ public class PaqueteService {
 
                         paquete.setIdPaquete(System.currentTimeMillis());
                         paquete.setIdCliente(Long.parseLong(idCliente));
-                        paquete.setDireccionEntrega(command.getDireccionEntrega());
-                        paquete.setDireccionRecoleccion(command.getDireccionRecoleccion());
+                        paquete.setIdOrden(Long.parseLong(idOrden));
+                        paquete.setNombreApellidoEntrega(command.getNombreApellidoEntrega());
                         paquete.setPesoKgs(Double.parseDouble(command.getPesoKgs()));
-                        paquete.setDescripcion(command.getDescripcion());
+                        paquete.setDescripcionPaquete(command.getDescripcionPaquete());
 
                         paqueteRepository.save(paquete);
 
