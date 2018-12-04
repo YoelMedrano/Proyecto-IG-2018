@@ -70,7 +70,7 @@ public class ClienteService {
                     user.setCorreoElectronico(u.getCorreoElectronico());
                     user.setCantidadDeIntentos(1);
 
-                    return bloqueo.RegistrarBloqueo(user);//ResponseEntity.badRequest().body(buildNotifyResponse(""));
+                    return bloqueo.RegistrarBloqueo(user);
                 }
             }
         }catch(Exception e){
