@@ -56,6 +56,17 @@ public class OrdenService {
 
         }
 
+    public ResponseEntity<Object> eliminarOrden(String id) {
+        try {
+
+           ordenRepository.deleteById(Long.parseLong(id));
+
+            return ResponseEntity.ok().body(buildNotifyResponse("La Orden ha sido eliminada"));
+        }catch(Exception e){
+            return ResponseEntity.badRequest().body(buildNotifyResponse("La Orden no pudo ser eliminada"));
+
+        }
+    }
 
 
 

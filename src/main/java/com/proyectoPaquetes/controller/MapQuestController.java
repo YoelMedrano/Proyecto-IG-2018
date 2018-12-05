@@ -22,9 +22,16 @@ public class MapQuestController {
 
 
 
-    @RequestMapping(value = "/map", method = RequestMethod.GET)
+    @RequestMapping(value = "/latlng", method = RequestMethod.GET)
     public ResponseEntity search( @RequestParam("query") String query, @RequestParam("id") String id) {
         query = query.replace(" ", "");
-        return mapquestService.searchDireccion(query, id);
+        return mapquestService.buscarLatitudLongitud(query, id);
     }
+
+    @RequestMapping(value = "/direccion/{lat}/{lng}", method = RequestMethod.GET)
+    public ResponseEntity searchDireccion(@PathVariable("lat") String lat, @PathVariable("lng") String lng) {
+        return mapquestService.buscarDireccion(lat,lng);
+    }
+
+
 }

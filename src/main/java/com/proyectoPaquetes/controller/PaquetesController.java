@@ -28,21 +28,10 @@ public class PaquetesController {
         return paqueteService.register(command,id,idOrden);
     }
 
- /*   @RequestMapping(value = "/login", consumes = "application/json", method = RequestMethod.POST)
-    public ResponseEntity login(@Valid @RequestBody ClienteLoginCommand command) {
-
-        return clienteService.login(command);
+    @RequestMapping(value = "/eliminar/{id}", consumes = "application/json", method = RequestMethod.DELETE)
+    public ResponseEntity delete(@PathVariable("id") String id) {
+        return paqueteService.eliminarPaquete(id);
     }
 
-
-    @RequestMapping(value = "/actualizar/{id}", consumes = "application/json", method = RequestMethod.PUT)
-    public ResponseEntity update(@Valid @RequestBody ClienteUpdateCommand command, @PathVariable("id") String id) {
-        return clienteService.update(command, id);
-    }*/
-/*
-    @RequestMapping(value = "/delete/{id}", consumes = "application/json", method = RequestMethod.DELETE)
-    public ResponseEntity delete(@Valid @RequestBody UserDeleteCommand command,@PathVariable("id") String id) {
-        return userService.delete(command, id);
-    }*/
 
 }

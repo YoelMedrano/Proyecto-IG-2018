@@ -58,6 +58,18 @@ public class PaqueteService {
 
             }
 
+    public ResponseEntity<Object> eliminarPaquete(String id) {
+        try {
+
+            paqueteRepository.deleteById(Long.parseLong(id));
+
+            return ResponseEntity.ok().body(buildNotifyResponse("El paquete ha sido eliminado"));
+        }catch(Exception e){
+            return ResponseEntity.badRequest().body(buildNotifyResponse("El paquete no pudo ser eliminado "));
+
+        }
+    }
+
 
 /*
         public ResponseEntity<Object> update(ClienteUpdateCommand command, String id) {

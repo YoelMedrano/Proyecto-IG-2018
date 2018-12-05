@@ -43,10 +43,10 @@ public class ClienteController {
     public ResponseEntity update(@Valid @RequestBody ClienteUpdateCommand command, @PathVariable("id") String id) {
         return clienteService.update(command, id);
     }
-/*
-    @RequestMapping(value = "/delete/{id}", consumes = "application/json", method = RequestMethod.DELETE)
-    public ResponseEntity delete(@Valid @RequestBody UserDeleteCommand command,@PathVariable("id") String id) {
-        return userService.delete(command, id);
-    }*/
+
+    @RequestMapping(value = "/eliminar/{id}", consumes = "application/json", method = RequestMethod.DELETE)
+    public ResponseEntity delete(@PathVariable("id") String id) {
+        return clienteService.eliminarCliente(id);
+    }
 
 }

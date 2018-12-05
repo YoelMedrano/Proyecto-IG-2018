@@ -62,6 +62,20 @@ public class DireccionService {
     }
 
 
+    public ResponseEntity<Object> eliminarDireccion(String id) {
+        try {
+
+            direccionRepository.deleteById(Long.parseLong(id));
+
+            return ResponseEntity.ok().body(buildNotifyResponse("La direccion ha sido eliminada"));
+        }catch(Exception e){
+            return ResponseEntity.badRequest().body(buildNotifyResponse("La direccion no pudo ser eliminada"));
+
+        }
+    }
+
+
+
     private NotifyResponse buildNotifyResponse(String message) { //MUESTRA UN MENSAJE DE NOTIFICACIÓN
         NotifyResponse respuesta = new NotifyResponse();
         respuesta.setMessage(message);

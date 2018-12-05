@@ -30,6 +30,10 @@ public class OrdenController {
         }
 
 
+        @RequestMapping(value = "/eliminar/{id}", consumes = "application/json", method = RequestMethod.DELETE)
+        public ResponseEntity delete(@PathVariable("id") String id) {
+                return ordenService.eliminarOrden(id);
+        }
 
 
 }

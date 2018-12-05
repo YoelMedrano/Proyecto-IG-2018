@@ -28,7 +28,10 @@ public class DireccionController {
         }
 
 
-
+    @RequestMapping(value = "/eliminar/{id}", consumes = "application/json", method = RequestMethod.DELETE)
+    public ResponseEntity delete(@PathVariable("id") String id) {
+        return service.eliminarDireccion(id);
+    }
 
 
 

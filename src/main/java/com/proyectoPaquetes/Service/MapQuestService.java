@@ -34,9 +34,36 @@ public class MapQuestService {
 
     private final String SECRETODELCONSUMIDOR = "5UnSkjUiMhFhsjhr";
 
-    public ResponseEntity<Object> searchDireccion( String searchTerm, String id){
+    public ResponseEntity<Object> buscarLatitudLongitud( String searchTerm, String id){
 
         String apiAddressGet = "http://open.mapquestapi.com/geocoding/v1/address?key="+CLAVEDELCONSUMIDOR+"&location="+searchTerm;
+
+        List<LocationsData> location;
+        List<Locations> locations;
+
+        RestTemplate restTemplate2 = new RestTemplate();
+        Results locationInfo = restTemplate2.getForObject(apiAddressGet, Results.class);
+        locations = locationInfo.getResults();
+
+        location = locations.get(0).getLocations();
+
+
+        if (location.isEmpty()) {
+            log.info("Search has not been sucessfull");
+            return ResponseEntity.badRequest().body(buildNotifyResponse("no_result."));
+        }else {
+            return ResponseEntity.ok(buildResponseApis(location));
+        }
+
+
+    }
+
+
+    public ResponseEntity<Object> buscarDireccion(String latitud, String longitud){
+
+        String apiAddressGet = "http://open.mapquestapi.com/geocoding/v1/reverse?key="+CLAVEDELCONSUMIDOR+"&location="+latitud+","+longitud+"&includeRoadMetadata=true&includeNearestIntersection=true";
+
+
 
         List<LocationsData> location;
         List<Locations> locations;

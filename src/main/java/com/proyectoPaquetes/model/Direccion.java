@@ -45,10 +45,10 @@ public class Direccion {
     private String pais;
 
 
-    private Long longitud;
+    private float longitud;
 
 
-    private Long latitud;
+    private float latitud;
 
 
     public Long getIdDireccion() {
@@ -107,19 +107,19 @@ public class Direccion {
         this.pais = pais;
     }
 
-    public Long getLongitud() {
+    public float getLongitud() {
         return longitud;
     }
 
-    public void setLongitud(Long longitud) {
+    public void setLongitud(float longitud) {
         this.longitud = longitud;
     }
 
-    public Long getLatitud() {
+    public float getLatitud() {
         return latitud;
     }
 
-    public void setLatitud(Long latitud) {
+    public void setLatitud(float latitud) {
         this.latitud = latitud;
     }
 }

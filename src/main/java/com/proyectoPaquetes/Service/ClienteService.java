@@ -163,7 +163,17 @@ public class ClienteService {
     }
 
 
+    public ResponseEntity<Object> eliminarCliente(String id) {
+        try {
 
+            clienteRepository.deleteById(Long.parseLong(id));
+
+            return ResponseEntity.ok().body(buildNotifyResponse("El usuario ha sido eliminado"));
+        }catch(Exception e){
+                return ResponseEntity.badRequest().body(buildNotifyResponse("El Usuario no pudo ser eliminado "));
+
+            }
+    }
 
 
 
