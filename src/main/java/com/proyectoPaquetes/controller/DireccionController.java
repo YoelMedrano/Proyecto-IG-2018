@@ -33,6 +33,11 @@ public class DireccionController {
         return service.eliminarDireccion(id);
     }
 
+    @RequestMapping(value = "/buscar/{idOrden}", consumes = "application/json", method = RequestMethod.GET)
+    public ResponseEntity buscarOrdenesDeUnCliente(@PathVariable("idOrden") String id) {
+
+        return service.buscarDireccionesDeUnaOrden(id);
+    }
 
 
     }

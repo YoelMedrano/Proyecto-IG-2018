@@ -17,15 +17,14 @@ public class Paquete extends AuditModel {
 
     private Long idOrden;
 
-    private Long idCliente;
 
     @NotBlank
-    @Size(min = 3, max = 100)
+    @Size(min = 2, max = 40)
     private String nombreApellidoEntrega;
 
 
     @NotBlank
-    @Size(min = 3, max = 100)
+    @Size(min = 2, max = 40)
     private String descripcionPaquete;
 
 
@@ -73,11 +72,6 @@ public class Paquete extends AuditModel {
         this.pesoKgs = peso;
     }
 
-    public Long getIdCliente() {
-        return idCliente;
-    }
 
-    public void setIdCliente(Long idCliente) {
-        this.idCliente = idCliente;
-    }
+
 }

@@ -28,7 +28,6 @@ public class OrdenSignUpCommand implements Serializable {
         private String direccionRecoleccion;
 
 
-
     public String getDireccionEntrega() {
         return direccionEntrega;
     }
@@ -44,4 +43,6 @@ public class OrdenSignUpCommand implements Serializable {
     public void setDireccionRecoleccion(String direccionRecoleccion) {
         this.direccionRecoleccion = direccionRecoleccion;
     }
+
+
 }

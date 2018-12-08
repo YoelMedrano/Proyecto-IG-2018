@@ -23,26 +23,31 @@ public class Direccion {
     @Id
     private Long idDireccion;
 
+
     private Long idOrden;
 
 
 
     @NotBlank
-    @Size(min = 3, max = 100)
+    @Size(min = 2, max = 40)
     private String direccion1;
     @NotBlank
-    @Size(min = 3, max = 100)
+    @Size(min = 2, max = 40)
     private String direccion2;
     @NotBlank
-    @Size(min = 3, max = 100)
+    @Size(min = 2, max = 40)
     private String codigoPostal;
     @NotBlank
-    @Size(min = 3, max = 100)
+    @Size(min = 2, max = 40)
     private String Ciudad;
 
     @NotBlank
-    @Size(min = 3, max = 100)
+    @Size(min = 2, max = 40)
     private String pais;
+
+    @NotBlank
+    @Size(min = 2, max = 40)
+    private String tipoDeDireccion; //si es de recoleccion o entrega
 
 
     private float longitud;
@@ -121,5 +126,13 @@ public class Direccion {
 
     public void setLatitud(float latitud) {
         this.latitud = latitud;
+    }
+
+    public String getTipoDeDireccion() {
+        return tipoDeDireccion;
+    }
+
+    public void setTipoDeDireccion(String tipoDeDireccion) {
+        this.tipoDeDireccion = tipoDeDireccion;
     }
 }

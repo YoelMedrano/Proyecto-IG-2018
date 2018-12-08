@@ -23,14 +23,20 @@ public class PaquetesController {
 
 
 
-    @RequestMapping(value = "/registrar/{id}/{idOrden}", consumes = "application/json", method = RequestMethod.POST)
-    public ResponseEntity register(@Valid @RequestBody PaqueteSignUpCommand command,@PathVariable("id") String id,@PathVariable("idOrden") String idOrden) {
-        return paqueteService.register(command,id,idOrden);
+    @RequestMapping(value = "/registrar/{idOrden}", consumes = "application/json", method = RequestMethod.POST)
+    public ResponseEntity register(@Valid @RequestBody PaqueteSignUpCommand command,@PathVariable("idOrden") String idOrden) {
+        return paqueteService.register(command,idOrden);
     }
 
     @RequestMapping(value = "/eliminar/{id}", consumes = "application/json", method = RequestMethod.DELETE)
     public ResponseEntity delete(@PathVariable("id") String id) {
         return paqueteService.eliminarPaquete(id);
+    }
+
+    @RequestMapping(value = "/buscar/{idOrden}", consumes = "application/json", method = RequestMethod.GET)
+    public ResponseEntity buscarOrdenesDeUnCliente(@PathVariable("idOrden") String id) {
+
+        return paqueteService.buscarPaquetesDeUnaOrden(id);
     }
 
 

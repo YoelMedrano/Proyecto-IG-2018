@@ -47,9 +47,16 @@ public class DireccionSignUpCommand implements Serializable {
         private String pais;
 
 
-        private Long Latitud;
+          @NotNull(message = "Por favor, introduzca un tipo de direccion")
+          @NotEmpty(message = "Por favor, introduzca un tipo de direccion")
+          @Size(max = ValidationRules.FIRST_LAST_NAME_MAX_SIZE, message = " no puede contener más de 40 caracteres.")
+          @Pattern(regexp = ValidationRules.FIRST_LAST_NAME_REGEX, message = " posee caracteres no válidos.")
+          private String tipoDeDireccion;
 
-        private Long Longitud;
+
+        private float Latitud;
+
+        private float Longitud;
 
 
     public String getDireccion1() {
@@ -92,19 +99,27 @@ public class DireccionSignUpCommand implements Serializable {
         this.pais = pais;
     }
 
-    public Long getLatitud() {
+    public String getTipoDeDireccion() {
+        return tipoDeDireccion;
+    }
+
+    public void setTipoDeDireccion(String tipoDeDireccion) {
+        this.tipoDeDireccion = tipoDeDireccion;
+    }
+
+    public float getLatitud() {
         return Latitud;
     }
 
-    public void setLatitud(Long latitud) {
+    public void setLatitud(float latitud) {
         Latitud = latitud;
     }
 
-    public Long getLongitud() {
+    public float getLongitud() {
         return Longitud;
     }
 
-    public void setLongitud(Long longitud) {
+    public void setLongitud(float longitud) {
         Longitud = longitud;
     }
 }

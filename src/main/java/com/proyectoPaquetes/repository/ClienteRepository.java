@@ -6,8 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.proyectoPaquetes.model.Cliente;
 import java.util.ArrayList;
 
-//import org.springframework.data.repository.CrudRepository;
-
 @Repository
 public interface ClienteRepository extends JpaRepository<Cliente, Long> {
 

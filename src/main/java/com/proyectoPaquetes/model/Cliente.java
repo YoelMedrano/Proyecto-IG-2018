@@ -18,16 +18,16 @@ public class Cliente extends AuditModel {
     private Long idCliente;
 
     @NotBlank
-    @Size(min = 3, max = 100)
+    @Size(min = 2, max = 40)
     private String nombre;
     @NotBlank
-    @Size(min = 3, max = 100)
+    @Size(min = 2, max = 40)
     private String apellido;
     @NotBlank
-    @Size(min = 3, max = 100)
+    @Size(min = 2, max = 40)
     private String correoElectronico;
     @NotBlank
-    @Size(min = 3, max = 100)
+    @Size(min = 2, max = 40)
     @ValidPassword
     private String contrasena;
 

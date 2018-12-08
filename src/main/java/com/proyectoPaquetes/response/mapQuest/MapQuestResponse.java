@@ -9,7 +9,6 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Data
 @ToString
-
 public class MapQuestResponse {
 
     private List<LocationResponse> locations;

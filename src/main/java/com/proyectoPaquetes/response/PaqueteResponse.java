@@ -11,13 +11,25 @@ import lombok.ToString;
 public class PaqueteResponse {
 
     private String idPaquete;
-    private String idCliente;
 
-    private String direccionEntrega;
-    private String direccionRecoleccion;
+    private String idOrden;
+
+    private String nombreApellidoEntrega;
+
+
+    private String descripcionPaquete;
+
+
     private String pesoKgs;
-    private String descripcion;
 
+
+    public String getIdOrden() {
+        return idOrden;
+    }
+
+    public void setIdOrden(String idOrden) {
+        this.idOrden = idOrden;
+    }
 
     public String getIdPaquete() {
         return idPaquete;
@@ -27,28 +39,22 @@ public class PaqueteResponse {
         this.idPaquete = idPaquete;
     }
 
-    public String getIdCliente() {
-        return idCliente;
+
+
+    public String getNombreApellidoEntrega() {
+        return nombreApellidoEntrega;
     }
 
-    public void setIdCliente(String idCliente) {
-        this.idCliente = idCliente;
+    public void setNombreApellidoEntrega(String nombreApellidoEntrega) {
+        this.nombreApellidoEntrega = nombreApellidoEntrega;
     }
 
-    public String getDireccionEntrega() {
-        return direccionEntrega;
+    public String getDescripcionPaquete() {
+        return descripcionPaquete;
     }
 
-    public void setDireccionEntrega(String direccionEntrega) {
-        this.direccionEntrega = direccionEntrega;
-    }
-
-    public String getDireccionRecoleccion() {
-        return direccionRecoleccion;
-    }
-
-    public void setDireccionRecoleccion(String direccionRecoleccion) {
-        this.direccionRecoleccion = direccionRecoleccion;
+    public void setDescripcionPaquete(String descripcionPaquete) {
+        this.descripcionPaquete = descripcionPaquete;
     }
 
     public String getPesoKgs() {
@@ -57,13 +63,5 @@ public class PaqueteResponse {
 
     public void setPesoKgs(String pesoKgs) {
         this.pesoKgs = pesoKgs;
-    }
-
-    public String getDescripcion() {
-        return descripcion;
-    }
-
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
     }
 }

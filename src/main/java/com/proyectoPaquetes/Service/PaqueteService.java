@@ -6,12 +6,18 @@ import com.proyectoPaquetes.model.Paquete;
 import com.proyectoPaquetes.repository.ClienteRepository;
 import com.proyectoPaquetes.repository.PaqueteRepository;
 import com.proyectoPaquetes.response.NotifyResponse;
+import com.proyectoPaquetes.response.PaqueteResponse;
+import com.proyectoPaquetes.response.ListPaqueteResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.time.LocalDateTime;
+
+
+import java.util.ArrayList;
 
 @Slf4j
 
@@ -22,20 +28,19 @@ public class PaqueteService {
         @Autowired
         private PaqueteRepository paqueteRepository;
         @Autowired
-        private ClienteRepository clienteRepository;
+        private ClienteRepository ordenRepository;
 
 
-            public ResponseEntity<Object> register(PaqueteSignUpCommand command,String idCliente,String idOrden) {
+            public ResponseEntity<Object> register(PaqueteSignUpCommand command,String idOrden) {
                 log.debug("About to be processed [{}]", command);
 
-                if (clienteRepository.existsById(Long.parseLong(idCliente))) {
+                if (ordenRepository.existsById(Long.parseLong(idOrden))) {
                     try {
 
 
                         Paquete paquete = new Paquete();
 
                         paquete.setIdPaquete(System.currentTimeMillis());
-                        paquete.setIdCliente(Long.parseLong(idCliente));
                         paquete.setIdOrden(Long.parseLong(idOrden));
                         paquete.setNombreApellidoEntrega(command.getNombreApellidoEntrega());
                         paquete.setPesoKgs(Double.parseDouble(command.getPesoKgs()));
@@ -43,7 +48,7 @@ public class PaqueteService {
 
                         paqueteRepository.save(paquete);
 
-                        log.info("Paquete Registrado Id = {} , ClienteId = {} ", paquete.getIdPaquete(), paquete.getIdCliente());
+                        log.info("Paquete Registrado Id = {} , ClienteId = {} ", paquete.getIdPaquete());
 
                         return ResponseEntity.ok().body(buildNotifyResponse("Paquete registrado "));
 
@@ -58,6 +63,55 @@ public class PaqueteService {
 
             }
 
+
+
+    public ResponseEntity<Object> buscarPaquetesDeUnaOrden(String idOrden){
+        try{
+
+            List<Paquete> paquete;
+
+            paquete = paqueteRepository.findAllByIdOrden(Long.parseLong(idOrden));
+
+            if (paquete != null) {
+
+
+
+                List<PaqueteResponse> listResponses = new ArrayList<>();
+                paquete.forEach( i-> {
+
+                    PaqueteResponse paqueteResponse = new PaqueteResponse();
+
+                    paqueteResponse.setIdPaquete(String.valueOf(i.getIdPaquete()));
+                    paqueteResponse.setIdOrden(String.valueOf(i.getIdOrden()));
+                    paqueteResponse.setPesoKgs(String.valueOf(i.getPesoKgs()));
+                    paqueteResponse.setNombreApellidoEntrega(i.getNombreApellidoEntrega());
+                    paqueteResponse.setDescripcionPaquete(i.getDescripcionPaquete());
+
+
+                            listResponses.add(paqueteResponse);
+                        }
+                );
+                ListPaqueteResponse response = new ListPaqueteResponse();
+
+                response.setPaquetes(listResponses);
+
+                return ResponseEntity.ok(response);
+
+            } else
+                return ResponseEntity.badRequest().body(buildNotifyResponse("No se Encontraron Paquetes en la Orden"));
+
+
+        }catch(Exception e){
+            return ResponseEntity.badRequest().body(buildNotifyResponse("-*Error*- No se Encontraron Paquetes de esta orden"));
+
+
+        }
+    }
+
+
+
+
+
     public ResponseEntity<Object> eliminarPaquete(String id) {
         try {
 
@@ -69,38 +123,6 @@ public class PaqueteService {
 
         }
     }
-
-
-/*
-        public ResponseEntity<Object> update(ClienteUpdateCommand command, String id) {
-            log.debug("About to process [{}]", command);
-            if (!clienteRepository.existsById(Long.parseLong(id))) {
-                log.info("Cannot find user with ID={}", id);
-                return ResponseEntity.badRequest().body(buildNotifyResponse("id invalido"));
-            } else {
-                if(validation.esMayorDeEdad(command.getFechaNacimiento())){
-                    Cliente user = new Cliente();
-                    clienteRepository.deleteById(Long.parseLong(id));
-
-                    user.setIdCliente(Long.parseLong(id));
-                    user.setNombre(command.getNombre());
-                    user.setApellido(command.getApellido());
-                    user.setCorreoElectronico(command.getCorreoElectronico());
-                    user.setContrasena(command.getContrasena());
-                    user.setFechaNacimiento(command.getFechaNacimiento());
-
-                    clienteRepository.save(user);
-
-                    log.info("Updated user with ID={}", user.getIdCliente());
-
-                    return ResponseEntity.ok().body(buildNotifyResponse("La operación ha sido exitosa."));
-                }else{
-                    return ResponseEntity.badRequest().body(buildNotifyResponse("El Usuario no es mayor de edad "));
-
-                }
-            }
-        }
-*/
 
 
 

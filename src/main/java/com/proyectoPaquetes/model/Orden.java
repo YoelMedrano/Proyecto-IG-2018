@@ -25,13 +25,12 @@ public class Orden extends AuditModel {
 
         private Long idCliente;
 
-       private Long idDireccion;
 
         @NotBlank
-        @Size(min = 3, max = 100)
+        @Size(min = 2, max = 40)
         private String direccionEntrega;
         @NotBlank
-        @Size(min = 3, max = 100)
+        @Size(min = 2, max = 40)
         private String direccionRecoleccion;
 
 
@@ -51,27 +50,20 @@ public class Orden extends AuditModel {
                 this.idCliente = idCliente;
         }
 
-        public Long getIdDireccion() {
-                return idDireccion;
-        }
 
-        public void setIdDireccion(Long idDireccion) {
-                this.idDireccion = idDireccion;
-        }
+    public String getDireccionEntrega() {
+        return direccionEntrega;
+    }
 
-        public String getDireccionEntrega() {
-                return direccionEntrega;
-        }
+    public void setDireccionEntrega(String direccionEntrega) {
+        this.direccionEntrega = direccionEntrega;
+    }
 
-        public void setDireccionEntrega(String direccionEntrega) {
-                this.direccionEntrega = direccionEntrega;
-        }
+    public String getDireccionRecoleccion() {
+        return direccionRecoleccion;
+    }
 
-        public String getDireccionRecoleccion() {
-                return direccionRecoleccion;
-        }
-
-        public void setDireccionRecoleccion(String direccionRecoleccion) {
-                this.direccionRecoleccion = direccionRecoleccion;
-        }
+    public void setDireccionRecoleccion(String direccionRecoleccion) {
+        this.direccionRecoleccion = direccionRecoleccion;
+    }
 }
