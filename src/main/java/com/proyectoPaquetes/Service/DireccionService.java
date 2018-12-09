@@ -28,41 +28,79 @@ public class DireccionService {
     @Autowired
     private OrdenRepository ordenRepository;
 
-    public ResponseEntity<Object> register(DireccionSignUpCommand command,String idOrden) {
+    @Autowired
+    private OrdenDireccionService ordenDireccionService;
+
+
+
+    public ResponseEntity<Object> register(DireccionSignUpCommand command,String idOrden,String idCliente) {
         log.debug("About to be processed [{}]", command);
         try {
-        if (ordenRepository.existsById(Long.parseLong(idOrden))) {
+          //Valida que el Cliente y La Orden esten registrados
+        if (ordenRepository.existsByIdOrdenAndIdCliente(Long.parseLong(idOrden),Long.parseLong(idCliente))) {
+            long existeLaDireccion = 0;
 
-            if(verificarDireccion(command.getLatitud(),command.getLongitud())) {
+            //Verifica que el Cliente haya registrado estas coordenadas
+            Direccion yaExisteLaDireccion = direccionRepository.findByIdClienteAndLongitudAndLatitud(Long.parseLong(idCliente),command.getLongitud(),command.getLatitud());
 
-                Direccion direccion = new Direccion();
+            if(yaExisteLaDireccion != null) {
+                //Verifica que la Orden ya tenga esas coordenadas registradas
+                Direccion ordenYaAgregada = verificarDireccion(command.getLatitud(), command.getLongitud(), Long.parseLong(idOrden));
 
-                direccion.setIdDireccion(System.currentTimeMillis());
-                direccion.setIdOrden(Long.parseLong(idOrden));
-                direccion.setDireccion1(command.getDireccion1());
-                direccion.setDireccion2(command.getDireccion2());
-                direccion.setCodigoPostal(command.getCodigoPostal());
-                direccion.setCiudad(command.getCiudad());
-                direccion.setPais(command.getPais());
-                direccion.setTipoDeDireccion(command.getTipoDeDireccion());
-                direccion.setLongitud(command.getLongitud());
-                direccion.setLatitud(command.getLatitud());
+                if (ordenYaAgregada != null) {
+                    return ResponseEntity.badRequest().body(buildNotifyResponse("Ya la Orden posee esta Direccion"));
 
+                    }else{
+                    log.info("id direccion: {}",yaExisteLaDireccion.getIdDireccion());
+                    existeLaDireccion=yaExisteLaDireccion.getIdDireccion();
+                    return objectRegister(command, idOrden,idCliente,existeLaDireccion);
+                }
+            } else {
+                return objectRegister(command, idOrden,idCliente,existeLaDireccion);
 
-                direccionRepository.save(direccion);
-
-                log.info("Direccion Registrada Id = {} , OrdenId = {} ", direccion.getIdDireccion(), direccion.getIdOrden());
-
-                return ResponseEntity.ok().body(buildNotifyResponse("Direccion registrada "));
-
-
-            }else{
-            return ResponseEntity.badRequest().body(buildNotifyResponse("La direccion ya fue registrada"));
-        }
-
+            }
         }else{
-            return ResponseEntity.badRequest().body(buildNotifyResponse("id de orden invalido"));
+            return ResponseEntity.badRequest().body(buildNotifyResponse("El Cliente y la Orden no estan registrados"));
         }
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(buildNotifyResponse("*Ocurrio un Error* La direccion no se pudo registrar en el sistema."));
+
+        }
+    }
+
+    public ResponseEntity<Object> objectRegister(DireccionSignUpCommand command,String idOrden,String idCliente,Long existeLaDireccion) {
+
+
+        try {
+
+                    Direccion direccion = new Direccion();
+
+                    if(existeLaDireccion!=0) {
+                        direccion.setIdDireccion(existeLaDireccion);
+                    }else {
+                        direccion.setIdDireccion(System.currentTimeMillis());
+                    }
+                    direccion.setIdOrden(Long.parseLong(idOrden));
+                    direccion.setIdCliente(Long.parseLong(idCliente));
+                    direccion.setDireccion1(command.getDireccion1());
+                    direccion.setDireccion2(command.getDireccion2());
+                    direccion.setCodigoPostal(command.getCodigoPostal());
+                    direccion.setCiudad(command.getCiudad());
+                    direccion.setPais(command.getPais());
+                    direccion.setTipoDeDireccion(command.getTipoDeDireccion());
+                    direccion.setLongitud(command.getLongitud());
+                    direccion.setLatitud(command.getLatitud());
+
+
+                    direccionRepository.save(direccion);
+
+
+                    ordenDireccionService.register(idOrden,String.valueOf(direccion.getIdDireccion())); //registra los id de la orden y la direccion
+
+                    log.info("Direccion Registrada Id = {} , OrdenId = {} ", direccion.getIdDireccion(), direccion.getIdOrden());
+
+                    return ResponseEntity.ok().body(buildNotifyResponse("Direccion registrada "));
+
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(buildNotifyResponse("*Ocurrio un Error* : La direccion no se pudo registrar en el sistema."));
 
@@ -70,7 +108,7 @@ public class DireccionService {
     }
 
 
-    public ResponseEntity<Object> buscarDireccion(String longitud,String latitud){
+   /* public ResponseEntity<Object> buscarDireccion(String longitud,String latitud){
         try{
             Direccion direccion;
 
@@ -102,7 +140,7 @@ public class DireccionService {
 
         }
     }
-
+*/
 
 
 
@@ -156,14 +194,32 @@ public class DireccionService {
     }
 
 
-    boolean verificarDireccion(float latitud,float longitud){
+   public Direccion verificarDireccion(float latitud,float longitud,Long idOrden){
 
-        if(direccionRepository.existsByLongitudAndLatitud(longitud,latitud)){
-            return false;
-        }
+    try{
+        Direccion direccion;
 
-        return true;
+
+         direccion= direccionRepository.findByLongitudAndLatitudAndIdOrden(longitud,latitud,idOrden);
+
+
+        if (direccion == null)
+            return null;
+        else
+            return direccion;
+
+    }catch(Exception e) {
+        log.info("Ocurrio un error buscando la direccion");
+
+        return null;
     }
+
+    }
+
+
+
+
+
 
 
     public ResponseEntity<Object> eliminarDireccion(String id) {

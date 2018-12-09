@@ -35,10 +35,10 @@ public class OrdenController {
                 return ordenService.eliminarOrden(id);
         }
 
-        @RequestMapping(value = "/buscar/{longitud}/{latitud}", consumes = "application/json", method = RequestMethod.GET)
-        public ResponseEntity buscarOrden(@PathVariable("longitud") String longitud,@PathVariable("latitud") String latitud) {
+        @RequestMapping(value = "/buscar/{idCliente}/{longitud}/{latitud}", consumes = "application/json", method = RequestMethod.GET)
+        public ResponseEntity buscarOrden(@PathVariable("idCliente") String idCliente,@PathVariable("longitud") String longitud,@PathVariable("latitud") String latitud) {
 
-                return ordenService.buscarOrdenDadoLatLng(longitud,latitud);
+                return ordenService.buscarOrdenDadoLatLng(idCliente,longitud,latitud);
         }
 
         @RequestMapping(value = "/buscar/{idCliente}", consumes = "application/json", method = RequestMethod.GET)

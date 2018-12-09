@@ -34,15 +34,19 @@ public class OrdenService {
         @Autowired
         private DireccionRepository direccionRepository;
 
+        @Autowired
+        private OrdenDireccionService ordenDireccionService;
+
+
 
         public ResponseEntity<Object> register(OrdenSignUpCommand command,String idCliente) {
             log.debug("About to be processed [{}]", command);
 
-            if (clienteRepository.existsById(Long.parseLong(idCliente))) {
-                try {
+               try {
 
+                   if (clienteRepository.existsById(Long.parseLong(idCliente))) {
 
-                    Orden orden = new Orden();
+                       Orden orden = new Orden();
 
                     orden.setIdOrden(System.currentTimeMillis());
                     orden.setIdCliente(Long.parseLong(idCliente));
@@ -51,30 +55,33 @@ public class OrdenService {
                     orden.setDireccionRecoleccion(command.getDireccionRecoleccion());
 
 
+
                     ordenRepository.save(orden);
+
 
                     log.info("Orden Registrado Id = {} , ClienteId = {} ", orden.getIdOrden(), orden.getIdCliente());
 
                     return ResponseEntity.ok().body(buildNotifyResponse("Orden registrada"));
 
+                   }else{
+                       return ResponseEntity.badRequest().body(buildNotifyResponse("id invalido"));
+                   }
 
                 } catch (Exception e) {
                     return ResponseEntity.badRequest().body(buildNotifyResponse("*Ocurrio un Error* :La orden no se pudo registrar en el sistema."));
 
                 }
-            }else{
-                return ResponseEntity.badRequest().body(buildNotifyResponse("id invalido"));
-            }
+
 
         }
 
 
 
-    public ResponseEntity<Object> buscarOrdenDadoLatLng(String longitud,String latitud){
+    public ResponseEntity<Object> buscarOrdenDadoLatLng(String idCliente,String longitud,String latitud){
          try{
         Direccion direccion;
 
-        direccion = direccionRepository.findByLongitudAndLatitud(Float.parseFloat(longitud),Float.parseFloat(latitud));
+        direccion = direccionRepository.findByIdClienteAndLongitudAndLatitud(Long.parseLong(idCliente),Float.parseFloat(longitud),Float.parseFloat(latitud));
 
        if(direccion!=null) {
            Orden orden;

@@ -7,7 +7,6 @@ import java.util.Date;
 public class Validation {
 
 
-//valida mayoria de edad
 
     public Boolean esMayorDeEdad(Date fecha){
 

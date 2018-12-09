@@ -26,6 +26,8 @@ public class Direccion {
 
     private Long idOrden;
 
+    private Long idCliente;
+
 
 
     @NotBlank
@@ -55,6 +57,13 @@ public class Direccion {
 
     private float latitud;
 
+    public Long getIdCliente() {
+        return idCliente;
+    }
+
+    public void setIdCliente(Long idCliente) {
+        this.idCliente = idCliente;
+    }
 
     public Long getIdDireccion() {
         return idDireccion;

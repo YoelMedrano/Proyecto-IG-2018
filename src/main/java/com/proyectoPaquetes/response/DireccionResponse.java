@@ -14,6 +14,8 @@ public class DireccionResponse {
 
     private String idOrden;
 
+    private String idCliente;
+
 
     private String direccion1;
 
@@ -35,6 +37,15 @@ public class DireccionResponse {
 
     public String getIdDireccion() {
         return idDireccion;
+    }
+
+
+    public String getIdCliente() {
+        return idCliente;
+    }
+
+    public void setIdCliente(String idCliente) {
+        this.idCliente = idCliente;
     }
 
     public void setIdDireccion(String idDireccion) {

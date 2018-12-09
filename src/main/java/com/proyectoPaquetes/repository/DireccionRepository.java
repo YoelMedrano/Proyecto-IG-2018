@@ -11,10 +11,15 @@ import java.util.List;
 public interface DireccionRepository extends JpaRepository<Direccion, Long> {
 
 
-    Direccion findByLongitudAndLatitud(float longitud,float latitud);
+    Direccion findByIdClienteAndLongitudAndLatitud(Long idCliente,float longitud,float latitud);
+
+    Direccion findByLongitudAndLatitudAndIdOrden(float longitud,float latitud,Long idOrden);
 
     boolean  existsByLongitudAndLatitud(float longitud,float latitud);
 
-    List<Direccion> findAllByIdOrden(Long idCliente);
+    List<Direccion> findAllByIdOrden(Long idOrden);
+
+    List<Direccion> findAllByIdClienteAndLongitudAndLatitud(Long idCliente,float longitud,float latitud);
+
 
 }
