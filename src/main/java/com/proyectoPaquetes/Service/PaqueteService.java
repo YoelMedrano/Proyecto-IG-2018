@@ -3,7 +3,7 @@ package com.proyectoPaquetes.Service;
 
 import com.proyectoPaquetes.command.SignUp.PaqueteSignUpCommand;
 import com.proyectoPaquetes.model.Paquete;
-import com.proyectoPaquetes.repository.ClienteRepository;
+import com.proyectoPaquetes.repository.OrdenRepository;
 import com.proyectoPaquetes.repository.PaqueteRepository;
 import com.proyectoPaquetes.response.NotifyResponse;
 import com.proyectoPaquetes.response.PaqueteResponse;
@@ -28,13 +28,13 @@ public class PaqueteService {
         @Autowired
         private PaqueteRepository paqueteRepository;
         @Autowired
-        private ClienteRepository ordenRepository;
+        private OrdenRepository ordenRepository;
 
 
             public ResponseEntity<Object> register(PaqueteSignUpCommand command,String idOrden) {
                 log.debug("About to be processed [{}]", command);
 
-                if (ordenRepository.existsById(Long.parseLong(idOrden))) {
+                if (ordenRepository.existsByIdOrden(Long.parseLong(idOrden))) {
                     try {
 
 
@@ -48,7 +48,7 @@ public class PaqueteService {
 
                         paqueteRepository.save(paquete);
 
-                        log.info("Paquete Registrado Id = {} , ClienteId = {} ", paquete.getIdPaquete());
+                        log.info("Paquete Registrado Id = {} , Orden Id = {} ", paquete.getIdPaquete(),paquete.getIdOrden());
 
                         return ResponseEntity.ok().body(buildNotifyResponse("Paquete registrado "));
 

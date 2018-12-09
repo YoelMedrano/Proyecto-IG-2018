@@ -122,7 +122,6 @@ public class OrdenDireccionService {
             List<OrdenResponse> ordenes = new ArrayList<>();
 
             for (OrdenDireccion i : ordenDireccions) {
-                log.info("entro");
 
                 Orden orden;
 
@@ -149,7 +148,7 @@ public class OrdenDireccionService {
             return ResponseEntity.ok().body(response);
 
         } else
-        return ResponseEntity.badRequest().body(buildNotifyResponse("No se encontro la direccion con esas coordenadas"));
+        return ResponseEntity.badRequest().body(buildNotifyResponse("No se encontraron Ordenes en este Punto"));
 
     }catch(Exception e){
         return ResponseEntity.badRequest().body(buildNotifyResponse("Ocurrio un error al buscar la Orden"));

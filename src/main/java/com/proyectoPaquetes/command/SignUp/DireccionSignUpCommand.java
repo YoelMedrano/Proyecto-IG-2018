@@ -28,10 +28,8 @@ public class DireccionSignUpCommand implements Serializable {
         @Pattern(regexp = ValidationRules.FIRST_LAST_NAME_REGEX, message = "La direccion posee caracteres no válidos.")
         private String direccion2;
 
-          @NotNull(message = "Por favor, repita la codigo postal.")
-          @NotEmpty(message = "Por favor, repita la codigo postal.")
+
           @Size(max = ValidationRules.FIRST_LAST_NAME_MAX_SIZE, message = "El codigo postal no puede contener más de 40 caracteres.")
-          @Pattern(regexp = ValidationRules.FIRST_LAST_NAME_REGEX, message = "El codigo postal posee caracteres no válidos.")
           private String codigoPostal;
 
         @NotNull(message = "Por favor, introduzca una ciudad.")

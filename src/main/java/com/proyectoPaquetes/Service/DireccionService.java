@@ -108,40 +108,6 @@ public class DireccionService {
     }
 
 
-   /* public ResponseEntity<Object> buscarDireccion(String longitud,String latitud){
-        try{
-            Direccion direccion;
-
-            direccion = direccionRepository.findByLongitudAndLatitud(Float.parseFloat(longitud),Float.parseFloat(latitud));
-
-            if(direccion == null) {
-
-                DireccionResponse respuesta = new DireccionResponse();
-
-                respuesta.setIdDireccion(String.valueOf(direccion.getIdDireccion()));
-                respuesta.setIdOrden(String.valueOf(direccion.getIdOrden()));
-                respuesta.setDireccion1(direccion.getDireccion1());
-                respuesta.setDireccion2(direccion.getDireccion2());
-                respuesta.setCiudad(direccion.getCiudad());
-                respuesta.setCodigoPostal(direccion.getCodigoPostal());
-                respuesta.setTipoDeDireccion(direccion.getTipoDeDireccion());
-                respuesta.setPais(direccion.getPais());
-
-                respuesta.setLatitud(direccion.getLatitud());
-                respuesta.setLongitud(direccion.getLongitud());
-
-                return ResponseEntity.ok(respuesta);
-            }  else
-                return ResponseEntity.badRequest().body(buildNotifyResponse("No se encontro la orden"));
-
-
-        }catch(Exception e){
-            return ResponseEntity.badRequest().body(buildNotifyResponse("Ocurrio un error al buscar la Orden"));
-
-        }
-    }
-*/
-
 
 
     public ResponseEntity<Object>  buscarDireccionesDeUnaOrden(String id){

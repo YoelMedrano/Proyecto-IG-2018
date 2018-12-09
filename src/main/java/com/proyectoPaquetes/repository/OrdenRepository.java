@@ -16,4 +16,6 @@ public interface OrdenRepository extends JpaRepository<Orden, Long> {
 
     boolean existsByIdOrdenAndIdCliente(Long idOrden,Long idCliente);
 
+    boolean existsByIdOrden(Long idOrden);
+
 }

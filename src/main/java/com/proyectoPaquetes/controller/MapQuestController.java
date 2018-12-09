@@ -13,7 +13,7 @@ import java.util.List;
 
 @CrossOrigin
 @RestController
-@RequestMapping(value = "/search", produces = "application/json")
+@RequestMapping(value = "/buscar", produces = "application/json")
 public class MapQuestController {
 
 
@@ -22,10 +22,10 @@ public class MapQuestController {
 
 
 
-    @RequestMapping(value = "/latlng", method = RequestMethod.GET)
-    public ResponseEntity search( @RequestParam("query") String query, @RequestParam("id") String id) {
+    @RequestMapping(value = "/coordenadas", method = RequestMethod.GET)
+    public ResponseEntity search( @RequestParam("query") String query) {
         query = query.replace(" ", "");
-        return mapquestService.buscarLatitudLongitud(query, id);
+        return mapquestService.buscarLatitudLongitud(query);
     }
 
     @RequestMapping(value = "/direccion/{lat}/{lng}", method = RequestMethod.GET)

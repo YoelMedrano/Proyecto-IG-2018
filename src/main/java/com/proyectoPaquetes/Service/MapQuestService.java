@@ -34,7 +34,7 @@ public class MapQuestService {
 
     private final String SECRETODELCONSUMIDOR = "5UnSkjUiMhFhsjhr";
 
-    public ResponseEntity<Object> buscarLatitudLongitud( String searchTerm, String id){
+    public ResponseEntity<Object> buscarLatitudLongitud( String searchTerm){
 
         String apiAddressGet = "http://open.mapquestapi.com/geocoding/v1/address?key="+CLAVEDELCONSUMIDOR+"&location="+searchTerm;
 

@@ -154,7 +154,7 @@ public class ClienteService {
 
             log.info("Updated user with ID={}", user.getIdCliente());
 
-            return ResponseEntity.ok().body(buildNotifyResponse("La operación ha sido exitosa."));
+            return ResponseEntity.ok().body(buildNotifyResponse("Usuario Actualizado"));
             }else{
                 return ResponseEntity.badRequest().body(buildNotifyResponse("El Usuario no es mayor de edad "));
 
