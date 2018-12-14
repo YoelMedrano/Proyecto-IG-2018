@@ -24,10 +24,51 @@ angular.module('angularRestfulAuth', [
             controller: 'LoginController',
             templateUrl: 'partials/login.html'
         })
+
+        .when('/orden', {
+            controller: 'LoginController',
+            templateUrl: 'partials/orden.html'
+        })
+
+        .when('/direccion', {
+            controller: 'LoginController',
+            templateUrl: 'partials/direccion.html'
+        })
+
+        .when('/paquete', {
+            controller: 'LoginController',
+            templateUrl: 'partials/paquete.html'
+        })
+
+        .when('/seguimiento', {
+            controller: 'LoginController',
+            templateUrl: 'partials/seguimiento.html'
+        })
+
+        .when('/añadirdireccion', {
+            controller: 'LoginController',
+            templateUrl: 'partials/direccionadd.html'
+        })
+
+        .when('/añadirorden', {
+            controller: 'LoginController',
+            templateUrl: 'partials/ordenadd.html'
+        })
+
+        .when('/añadirpaquete', {
+            controller: 'LoginController',
+            templateUrl: 'partials/paqueteadd.html'
+        })
+        
         
         .when('/home', {
             controller: 'HomeCtrl',
             templateUrl: 'partials/home.html'
+        })
+
+        .when('/eliminarcliente', {
+            controller: 'LoginController',
+            templateUrl: 'partials/eliminarc.html'
         })
 
         .when('/', {
@@ -48,7 +89,7 @@ angular.module('angularRestfulAuth', [
  
         $rootScope.$on('$locationChangeStart', function (event, next, current) {
             // redirect to login page if not logged in
-            if ($location.path() !== '/login' && $location.path() !== '/registro' && !$rootScope.globals.currentUser ) {
+            if ($location.path() !== '/paquete' && $location.path() !== '/añadirdireccion' && $location.path() !== '/añadirpaquete' && $location.path() !== '/añadirorden' && $location.path() !== '/eliminarcliente' && $location.path() !== '/direccion' && $location.path() !== '/login' && $location.path() !== '/registro' && $location.path() !== '/orden'  && !$rootScope.globals.currentUser ) {
                 window.location="#/home";
                 
             }

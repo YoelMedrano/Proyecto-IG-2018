@@ -8,25 +8,11 @@ angular.module('Authentication')
         var service = {};
 
         service.Login = function (correoElectronico, contrasena, callback) {
-
-            /* Dummy authentication for testing, uses $timeout to simulate api call
-             ----------------------------------------------*/
-           /* $timeout(function(){
-                var response = { success: username === 'test' && contrasena === 'test' };
-                if(!response.success) {
-                    response.message = 'Username or contrasena is incorrect';
-                }
-                callback(response);
-            }, 1000);
-*/
-
-            // Use this for real authentication
-             //----------------------------------------------
             
-             $http.post( 'https://proyecto-paquetes-ings.herokuapp.com/cliente/login', {correoElectronico : correoElectronico , contrasena : contrasena})
-              .success(function (response){
-                       var response= { success: correoElectronico && contrasena };
-                       
+             $http.post( 'https://proyectopaquetes.herokuapp.com/cliente/login', {correoElectronico : correoElectronico , contrasena : contrasena})
+              .success(function (response,idCliente){
+                       var response= { success: response.idCliente };
+                        
                        callback(response);
                       
             },1000)
@@ -39,26 +25,131 @@ angular.module('Authentication')
          
 
         };
- 
-        service.SetCredentials = function (correoElectronico, contrasena) {
-            var authdata = Base64.encode(correoElectronico + ':' + contrasena);
+
+        service.Eliminarc = function (callback) {
+            $http({
+            method: 'DELETE',
+            url: 'https://proyectopaquetes.herokuapp.com/cliente/eliminar/' + $rootScope.globals.currentUser.authdata
+            }).success(function(response,message){
+                    var response = {success : response.message};
+                    callback(response)
+                },1000)
+                .error(function(response){
+                    response.message="Ocurrio un error";
+                    callback(response);
+                });
+        };
+
+        
+        service.SetCredentials = function (idCliente) {
+            var authdata =idCliente;
  
             $rootScope.globals = {
                 currentUser: {
-                    correoElectronico: correoElectronico,
-                    authdata: authdata
+                    authdata: authdata 
                 }
             };
  
-            $http.defaults.headers.common['Authorization'] = 'Basic ' + authdata; // jshint ignore:line
+            $http.defaults.headers.common['Authorization'] = 'Basic ' + authdata;
             $cookieStore.put('globals', $rootScope.globals);
         };
+
+        service.SetCredentialsO = function (idOrden) {
+            var authdata =idOrden;
  
+            $rootScope.globalsO = {
+                currentUser: {
+                    authdata: authdata 
+                }
+            };
+ 
+            $http.defaults.headers.common['Authorization'] = 'Basic ' + authdata;
+            $cookieStore.put('globalsO', $rootScope.globalsO);
+        };
+
+        service.SetCredentialsP = function (idPaquete) {
+            var authdata =idPaquete;
+ 
+            $rootScope.globalsP = {
+                currentUser: {
+                    authdata: authdata 
+                }
+            };
+ 
+            $http.defaults.headers.common['Authorization'] = 'Basic ' + authdata;
+            $cookieStore.put('globalsP', $rootScope.globalsP);
+        };
+
+        service.SetCredentialsD = function (idDireccion) {
+            var authdata =idDireccion;
+ 
+            $rootScope.globalsP = {
+                currentUser: {
+                    authdata: authdata 
+                }
+            };
+ 
+            $http.defaults.headers.common['Authorization'] = 'Basic ' + authdata;
+            $cookieStore.put('globalsD', $rootScope.globalsD);
+        };
+
+
+
         service.ClearCredentials = function () {
             $rootScope.globals = {};
             $cookieStore.remove('globals');
             $http.defaults.headers.common.Authorization = 'Basic ';
+            $rootScope.globalsO = {};
+            $cookieStore.remove('globalsO');
+            $http.defaults.headers.common.Authorization = 'Basic ';
+            $rootScope.globalsD = {};
+            $cookieStore.remove('globalsD');
+            $http.defaults.headers.common.Authorization = 'Basic ';
+            $rootScope.globalsP = {};
+            $cookieStore.remove('globalsP');
+            $http.defaults.headers.common.Authorization = 'Basic ';
         };
+
+        service.Orden = function (direccionEntrega,direccionRecoleccion,callback) {
+            $http.post('https://proyectopaquetes.herokuapp.com/orden/registrar/' + $rootScope.globals.currentUser.authdata ,
+                {direccionEntrega : direccionEntrega , direccionRecoleccion : direccionRecoleccion}).success(function(response,message){
+
+                    var response = {success : response.message};
+                    callback(response)
+                },1000)
+                .error(function(response){
+                    response.message="Ocurrio un error";
+                    callback(response);
+                });
+        };
+
+        service.Paquete = function (nombreApellidoEntrega,pesoKgs,descripcionPaquete,callback) {
+            $http.post('https://proyectopaquetes.herokuapp.com/paquete/registrar/' + $rootScope.globalsO.currentUser.authdata ,
+                {nombreApellidoEntrega : nombreApellidoEntrega , pesoKgs : pesoKgs , descripcionPaquete : descripcionPaquete}).success(function(response,message){
+                    var response = {success : response.message};
+                    callback(response)
+                },1000)
+                .error(function(response){
+                    response.message="Ocurrio un error";
+                    callback(response);
+                });
+        };
+
+        service.Direccion = function (direccion1,direccion2,codigoPostal,ciudad,pais,tipoDeDireccion,latitud,longitud,callback) {
+            $http.post('https://proyectopaquetes.herokuapp.com/direccion/registrar/' + $rootScope.globals.currentUser.authdata +
+                '/'+$rootScope.globalsO.currentUser.authdata ,
+                {direccion1 : direccion1 , direccion2 : direccion2 , codigoPostal : codigoPostal, ciudad : ciudad, pais : pais,
+                    tipoDeDireccion : tipoDeDireccion, latitud : latitud, longitud : longitud}).success(function(response,message){
+
+                    var response = {success : response.message};
+                    callback(response)
+                },1000)
+                .error(function(response){
+                    response.message="Ocurrio un error";
+                    callback(response);
+                });
+        };
+ 
  
         return service;
     }])
@@ -148,3 +239,4 @@ angular.module('Authentication')
  
     /* jshint ignore:end */
 });
+

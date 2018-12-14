@@ -1,0 +1,191 @@
+ <link rel="stylesheet" href="../css/home.css">
+   <title>Login</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src="https://api.mqcdn.com/sdk/mapquest-js/v1.3.2/mapquest.js"></script>
+    <link type="text/css" rel="stylesheet" href="https://api.mqcdn.com/sdk/mapquest-js/v1.3.2/mapquest.css"/>
+
+    <script type="text/javascript">
+      window.onload = function() {
+        L.mapquest.key = 'Ohu0mCESWDbUOTbp6GSviBsXSlOwW1sL';
+
+        var popup = L.popup();
+
+        var map = L.mapquest.map('map', {
+          center: [38.890385, -77.031989],
+          layers: L.mapquest.tileLayer('map'),
+          zoom: 14
+        });
+
+        map.addControl(L.mapquest.control());
+
+        map.on('click', function(e) {
+          popup.setLatLng(e.latlng).openOn(this);
+          L.mapquest.geocoding().reverse(e.latlng, generatePopupContent);
+        });
+
+        function generatePopupContent(error, response) {
+          var location = response.results[0].locations[0];
+          var street = location.street;
+          var city = location.adminArea5;
+          var state = location.adminArea3;
+          popup.setContent(street + ', ' + city + ', ' + state);
+        }
+      }
+    </script>
+  <style type="text/css">
+      
+      * {
+        margin:0px;
+        padding:0px;
+      }
+      
+      #header {
+        margin:auto;
+        width:500px;
+        font-family:Arial, Helvetica, sans-serif;
+      }
+      
+      ul, ol {
+        list-style:none;
+      }
+      
+      .nav > li {
+        float:left;
+      }
+      
+      .nav li a {
+        background-color:#000;
+        color:#fff;
+        text-decoration:none;
+        padding:7px 12px;
+        display:block;
+      }
+      
+      .nav li a:hover {
+        background-color:#434343;
+      }
+      
+      .nav li ul {
+        display:none;
+        position:absolute;
+        min-width:140px;
+      }
+      
+      .nav li:hover > ul {
+        display:block;
+      }
+      
+      .nav li ul li {
+        position:relative;
+      }
+      
+      .nav li ul li ul {
+        right:-140px;
+        top:0px;
+      }
+      
+      button, html input[type=button], input[type=reset], input[type=submit] {
+      -webkit-appearance: button;
+      cursor: pointer;
+      padding: 15px;
+      }
+
+    </style>
+	<!-- barra de navegacion  -->
+	<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <ul class="nav navbar-nav navbar-right">
+      <button ng-click="logout()" class="glyphicon glyphicon-log-in"> Logout</button>
+    </ul>
+    <div class="navbar-header">
+      <div id="header">
+      <ul class="nav">
+        <li><a href="">Inicio</a></li>
+        <li><a href="">Cliente</a>
+          <ul>
+            <li><a href="">Actualizar informacion</a></li>
+          </ul>
+        </li>
+        <li><a href="">Paquete</a>
+          <ul>
+            <li><a href="#/orden">Solicitud de recoleccion</a></li>
+            <li><a href="#/seguimiento">Seguimiento de paquete</a></li>
+            <li><a href="">Agregar</a>
+              <ul>
+               <li><a href="#/añadirdireccion">Agregar direccion</a></li>
+               <li><a href="#/añadirorden">Agregar orden</a></li>
+               <li><a href="#/añadirpaquete">Agregar paquete</a></li>
+              </ul>
+            <li><a href="">Eliminar</a>
+              <ul>
+               <li><a href="">Eliminar direccion</a></li>
+               <li><a href="">Eliminar orden</a></li>
+               <li><a href="">Eliminar paquete</a></li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    
+  </div>
+</nav>
+	<!-- fin barra de navegacion  -->	
+	<div class="limiter">
+		<div class="container-login100">
+
+			<div class="wrap-login100 p-l-55 p-r-55 p-t-65 p-b-50">
+				<center><img src="../images/logo.png"></center>
+				<form class="login100-form validate-form" ng-submit="orden()" role="form"> <link rel="stylesheet" href="../css/home.css">
+					<span class="login100-form-title p-b-33">
+						
+						<div ng-show="error" class="alert alert-danger">{{error}}</div>
+					</span>
+
+					<div class="wrap-input100 validate-input">
+						<input class="input100" type="address" name="direccionEntrega" id ="direccionEntrega"placeholder="Direccion de Entrega" ng-model="direccionEntrega" required="required">
+						<span class="focus-input100-1"></span>
+						<span class="focus-input100-2"></span>
+					</div>
+
+					<div class="wrap-input100 rs1 validate-input" data-validate="Debe ingresar la direccion">
+						<input class="input100" type="address" name="direccionRecoleccion"  id="direccionRecoleccion" placeholder="Direccion de Recoleccion" ng-model="direccionRecoleccion" required="required">
+						<span class="focus-input100-1"></span>
+						<span class="focus-input100-2"></span>
+					</div>
+
+					<div id="map" style="width: 100%; height: 200px;"></div>
+
+					<div class="container-login100-form-btn m-t-20">
+						<button class="login100-form-btn" type="submit" id="enviar">
+							Continuar
+						</button>
+						<button class="volver-btn2" onclick="location.href='https://proyecto-ig-2018.herokuapp.com/#/'">
+							Volver
+						</button>
+					</div>
+
+				</form>
+
+				
+			</div>
+		</div>
+	</div>
+	
+
+<script type="text/javascript">
+	enviar=document.getElementById("enviar");
+enviar.onclick=validarDatos;
+
+function validarDatos () {
+    var elemento =document.getElementById("correo");
+    if (elemento.checkValidity() ==false && elemento.required){
+    //document.getElementById("mensajes").innerHTML=`<p>Debe ingresar un ${elemento.id} valido</p>`;
+    document.getElementById("mensajes").innerHTML="<p>Debe ingresar un "+elemento.id +" valido</p>";
+}
+}
+</script>
+	
